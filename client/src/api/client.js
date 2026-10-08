@@ -1,4 +1,4 @@
-export const VITE_MOCK = true;
+export const VITE_MOCK = import.meta.env?.VITE_MOCK === 'true';
 
 const MOCK_DB = {
   admin: { role: 'admin', email: 'admin@agnitia.test', name: 'System Admin' },
