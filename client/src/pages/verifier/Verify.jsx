@@ -5,7 +5,7 @@ import FileDropzone from '../../components/FileDropzone';
 import QRScanner from '../../components/QRScanner';
 import StepTracker from '../../components/StepTracker';
 import ProgressBar from '../../components/ProgressBar';
-import VerdictBadge from '../../components/VerdictBadge';
+import ResultCard from '../../components/ResultCard';
 import { triggerToast } from '../../components/Toast';
 
 const Verify = () => {
@@ -99,21 +99,7 @@ const Verify = () => {
           </div>
           
           {isFinished && result && (
-            <div className="bg-white border rounded shadow-sm overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-500">
-              <div className="p-6 border-b bg-gray-50 flex justify-between items-center">
-                <h2 className="text-xl font-bold text-gray-800">Verification Result</h2>
-                <VerdictBadge verdict={result.verdict} className="text-lg px-4 py-2" />
-              </div>
-              <div className="p-6 space-y-4">
-                <p className="text-gray-700 font-medium">{result.summary}</p>
-                {result.document && (
-                  <div className="bg-gray-50 p-4 rounded border text-sm text-gray-600 space-y-2">
-                    <p><strong className="text-gray-800">Document ID:</strong> {result.document.docId}</p>
-                    <p><strong className="text-gray-800">SHA-256:</strong> <span className="font-mono text-xs bg-gray-200 px-1 py-0.5 rounded">{result.document.sha256}</span></p>
-                  </div>
-                )}
-              </div>
-            </div>
+            <ResultCard result={result} />
           )}
         </div>
       )}

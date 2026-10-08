@@ -72,12 +72,26 @@ export const client = async (endpoint, { method = 'GET', body, ...customConfig }
           return resolve({ 
             verificationId: endpoint.split('/').pop(),
             status: 'done',
-            verdict: 'GENUINE',
+            verdict: 'ALTERED',
             confidence: { level: 'high', score: 0.99 },
-            document: { docId: 'doc-123', name: 'test.pdf', type: 'application/pdf', size: 1024, sha256: 'abc...' },
-            summary: 'The document is authentic and unmodified.',
+            document: { docId: 'doc-123', name: 'test.pdf', type: 'application/pdf', size: 1024, sha256: 'abc123def456' },
+            summary: 'The document signature is valid, but visual tampering was detected in the marks section.',
+            changedFields: [{ field: 'marks', original: '85', altered: '95' }],
+            aiNotes: 'The font kerning in the altered region is inconsistent with the rest of the document.',
             timestamps: { startedAt: '2026-10-08T10:00:00Z', completedAt: '2026-10-08T10:00:10Z' },
             ok: true 
+          });
+        }
+        if (endpoint.match(/^\/api\/verify\/[^\/]+\/evidence$/) && method === 'GET') {
+          return resolve({
+            checks: [
+              { id: 'c1', category: 'crypto', status: 'pass', severity: 'low', label: 'Signature Check', detail: 'ECDSA P-256 valid' },
+              { id: 'c2', category: 'visual', status: 'fail', severity: 'high', label: 'Pixel Diff', detail: 'Mismatch in marks region', evidence: 'High structural similarity diff' }
+            ],
+            regions: [
+              { label: 'marks', x: 10, y: 20, w: 100, h: 50, heatmapUrl: '/mock-heatmap.png' }
+            ],
+            ok: true
           });
         }
         if (endpoint.startsWith('/api/public/verify/') && method === 'GET') {
