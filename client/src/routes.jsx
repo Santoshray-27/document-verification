@@ -10,12 +10,13 @@ import Dashboard from './pages/issuer/Dashboard';
 import IssueDocument from './pages/issuer/IssueDocument';
 import MyDocuments from './pages/issuer/MyDocuments';
 import Profile from './pages/issuer/Profile';
+import Verify from './pages/verifier/Verify';
+import PublicVerify from './pages/public/PublicVerify';
 
 const Placeholder = ({ name }) => <div className="p-4 bg-white shadow rounded"><h3 className="text-lg font-semibold mb-2">{name} placeholder</h3><p className="text-gray-600">Page under construction.</p></div>;
 
-const Verify = () => <Placeholder name="Verify Document" />;
 const History = () => <Placeholder name="Verification History" />;
-const PublicVerify = () => <Placeholder name="Public Verify" />;
+
 
 
 const ProtectedRoute = ({ children, allowedRoles }) => {

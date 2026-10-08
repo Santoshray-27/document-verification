@@ -65,7 +65,40 @@ export const client = async (endpoint, { method = 'GET', body, ...customConfig }
         if (endpoint === '/api/documents/me' && method === 'GET') {
           return resolve({ documents: [{ id: 'doc-123', templateId: 'degree-v1', status: 'GENUINE', issuedAt: '2026-10-08T10:00:00Z' }], ok: true });
         }
-
+        if (endpoint === '/api/verify' && method === 'POST') {
+          return resolve({ jobId: 'verify-job-123', verificationId: 'verify-123', ok: true });
+        }
+        if (endpoint.match(/^\/api\/verify\/[^\/]+$/) && method === 'GET') {
+          return resolve({ 
+            verificationId: endpoint.split('/').pop(),
+            status: 'done',
+            verdict: 'GENUINE',
+            confidence: { level: 'high', score: 0.99 },
+            document: { docId: 'doc-123', name: 'test.pdf', type: 'application/pdf', size: 1024, sha256: 'abc...' },
+            summary: 'The document is authentic and unmodified.',
+            timestamps: { startedAt: '2026-10-08T10:00:00Z', completedAt: '2026-10-08T10:00:10Z' },
+            ok: true 
+          });
+        }
+        if (endpoint.startsWith('/api/public/verify/') && method === 'GET') {
+          const docId = endpoint.split('/').pop();
+          if (docId === 'unknown' || docId === 'unverifiable') {
+            return resolve({
+              verificationId: 'pub-verify-unknown',
+              status: 'done',
+              verdict: 'UNVERIFIABLE',
+              summary: 'Issuer is not registered in the trusted directory. The document cannot be verified.',
+              ok: true
+            });
+          }
+          return resolve({
+            verificationId: 'pub-verify-123',
+            status: 'done',
+            verdict: 'GENUINE',
+            summary: 'The document is authentic and unmodified.',
+            ok: true
+          });
+        }
         
         if (!currentUser && !endpoint.startsWith('/api/public')) {
            return reject(new Error('401 Unauthorized'));
