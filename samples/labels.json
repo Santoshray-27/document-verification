@@ -1,0 +1,5 @@
+{
+  "doc1.pdf": "GENUINE",
+  "doc1_altered.pdf": "ALTERED",
+  "doc2_forged.pdf": "FORGED"
+}
