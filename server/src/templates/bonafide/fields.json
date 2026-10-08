@@ -1,0 +1,3 @@
+{
+  "studentName": { "type": "string", "required": true }
+}

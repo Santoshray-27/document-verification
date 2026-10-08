@@ -1,0 +1,4 @@
+{
+  "studentName": { "type": "string", "required": true },
+  "degreeName": { "type": "string", "required": true }
+}
